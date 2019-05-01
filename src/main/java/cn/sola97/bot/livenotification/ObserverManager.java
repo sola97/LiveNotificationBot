@@ -215,7 +215,7 @@ public class ObserverManager implements Serializable {
     }
 
     public void deleteChannel(String channelId) {
-        observerPool.forEach((channel, tmap) -> tmap.forEach((type, kmap) -> kmap.forEach((key, ob) -> getObservable(type, key).ifPresent(obv -> obv.removeObserver(ob)))));
+        Optional.ofNullable(observerPool.get(channelId)).ifPresent(tmap-> tmap.forEach((type, kmap) -> kmap.forEach(((key, ob) -> getObservable(type, key).ifPresent(obv -> obv.removeObserver(ob))))));
         observerPool.remove(channelId);
         save();
     }
@@ -310,6 +310,7 @@ public class ObserverManager implements Serializable {
     }
 
     private synchronized void save() {
+        logger.info("save observerPool");
         saveObserverPool();
     }
 
