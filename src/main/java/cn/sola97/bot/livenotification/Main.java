@@ -22,7 +22,7 @@ public class Main {
         EventWaiter waiter = new EventWaiter();
         CommandClientBuilder client = new CommandClientBuilder();
         Bot bot = new Bot(waiter, manager);
-        client.useDefaultGame()
+        client.setGame(Game.watching(BotConfig.getGame()))
                 .setOwnerId(BotConfig.getOwnerId())
                 .setPrefix(BotConfig.getPrefix())
                 .addCommands(
@@ -42,7 +42,6 @@ public class Main {
                             .proxy(BotConfig.getProxy())
                     )
                     .setToken(BotConfig.getToken())
-                    .setGame(Game.playing("loading..."))
                     .addEventListener(waiter)
                     .addEventListener(client.build())
                     .addEventListener(new Listener(bot))
