@@ -58,11 +58,11 @@ public class TwitchObservable extends BaseObservable {
             }//(title|profile)changed with opened
             else if (keepedDTO.getLiveStatus() == LiveStatus.OPENED && newDTO.getLiveStatus() == LiveStatus.OPENED) {
                 //直播中可以获取Channel数据，更新keeped
-                if (!Objects.equals(keepedDTO.getTitle(), newDTO.getTitle())) {
+                if (!keepedDTO.getTitle().equals(newDTO.getTitle()) && !newDTO.getTitle().equals("null")) {
                     newDTO.setLiveEvent(LiveEvent.TITLE_CHANGED);
                     keepedDTO = newDTO;
                     setChanged(true);
-                }else if (!Objects.equals(keepedDTO.getThumbnail(), newDTO.getThumbnail())) {
+                }else if (!Objects.equals(keepedDTO.getThumbnail(), newDTO.getThumbnail()) && newDTO.getThumbnail() != null) {
                     newDTO.setLiveEvent(LiveEvent.THUMBNAIL_CHANGED);
                     keepedDTO = newDTO;
                     setChanged(true);

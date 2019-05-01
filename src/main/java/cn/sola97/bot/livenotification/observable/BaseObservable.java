@@ -76,11 +76,11 @@ public abstract class BaseObservable implements Runnable, Serializable {
             newDTO.setLiveEvent(LiveEvent.CLOSE);
             keepedDTO = newDTO;
             setChanged(true);
-        } else if (!Objects.equals(keepedDTO.getTitle(), newDTO.getTitle())) {
+        } else if (!keepedDTO.getTitle().equals(newDTO.getTitle()) && !newDTO.getTitle().equals("null")) {
             newDTO.setLiveEvent(LiveEvent.TITLE_CHANGED);
             keepedDTO = newDTO;
             setChanged(true);
-        } else if (!Objects.equals(keepedDTO.getThumbnail(), newDTO.getThumbnail())) {
+        } else if (!Objects.equals(keepedDTO.getThumbnail(), newDTO.getThumbnail()) && newDTO.getThumbnail() != null) {
             newDTO.setLiveEvent(LiveEvent.THUMBNAIL_CHANGED);
             keepedDTO = newDTO;
             setChanged(true);
