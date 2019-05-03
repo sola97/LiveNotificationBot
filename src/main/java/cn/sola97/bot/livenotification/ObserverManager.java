@@ -306,7 +306,10 @@ public class ObserverManager implements Serializable {
 
     private void observablePoolInit() {
         observablePool = new ConcurrentHashMap<>();
-        observerPool.forEach((channel, tmap) -> tmap.forEach((type, kmap) -> kmap.forEach((key, ob) -> getObservableElseNew(type, key).addObserver(ob))));
+        observerPool.forEach((channel, tmap) -> tmap.forEach((type, kmap) -> kmap.forEach((key, ob) -> {
+            if(ob.isEnabled())
+                getObservableElseNew(type, key).addObserver(ob);
+        })));
     }
 
     private synchronized void save() {
