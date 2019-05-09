@@ -6,7 +6,7 @@ import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.jagrosh.jdautilities.menu.Menu;
 import cn.sola97.bot.livenotification.Bot;
 import cn.sola97.bot.livenotification.commands.ChannelCommand;
-import cn.sola97.bot.livenotification.utils.ParseUntil;
+import cn.sola97.bot.livenotification.utils.ParseUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.*;
@@ -292,7 +292,7 @@ class Paginator extends Menu {
         int newPageNum = pageNum;
         int i;
         String url1 = Optional.ofNullable(embedBuilders.get(pageNum - 1).build()).map(MessageEmbed::getAuthor).map(MessageEmbed.AuthorInfo::getUrl).orElse("");
-        String[] args = ParseUntil.parseUrl(url1);
+        String[] args = ParseUtil.parseUrl(url1);
         String emoji = event.getReaction().getReactionEmote().getName();
         switch (emoji) {
             case LEFT:

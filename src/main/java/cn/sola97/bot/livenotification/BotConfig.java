@@ -1,6 +1,6 @@
 package cn.sola97.bot.livenotification;
 
-import cn.sola97.bot.livenotification.utils.ParseUntil;
+import cn.sola97.bot.livenotification.utils.ParseUtil;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.slf4j.Logger;
@@ -55,7 +55,7 @@ public class BotConfig {
 
     public static Proxy getProxy() {
         if(proxy==null || proxy.isEmpty())return null;
-        String[] args = ParseUntil.parseProxy(proxy);
+        String[] args = ParseUtil.parseProxy(proxy);
         if(args.length==0){
             logger.warn("ProxyURL is not correct.");
         }
