@@ -105,6 +105,12 @@ public class YoutubeDTO implements LiveDTO, Serializable {
 
     public class PlayabilityStatus implements Serializable {
         String status;
+        String reason;
+
+        public void setReason(String reason) {
+            this.reason = reason;
+            liveStatus = LiveStatus.CLOSED;
+        }
 
         public void setStatus(String status) {
             this.status = status;
@@ -113,7 +119,10 @@ public class YoutubeDTO implements LiveDTO, Serializable {
                     liveStatus = LiveStatus.CLOSED;
                     break;
                 case "OK":
-                    liveStatus = LiveStatus.OPENED;
+                    if(reason==null)
+                        liveStatus = LiveStatus.OPENED;
+                    else
+                        liveStatus = LiveStatus.CLOSED;
                     break;
                 default:
                     liveStatus = LiveStatus.UNKNOWN;

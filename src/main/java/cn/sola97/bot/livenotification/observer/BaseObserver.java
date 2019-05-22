@@ -25,7 +25,7 @@ abstract public class BaseObserver implements Serializable {
     private static final BlockingQueue<MessageDTO> queue = SingleBlockingQueue.getInstance();
 
     Boolean enabled = false;
-    LiveDTO liveDTO;
+    transient LiveDTO liveDTO;
     String discordChannelId;
     SortedSet<String> mentions;
     int messageMask = 0b0000;
