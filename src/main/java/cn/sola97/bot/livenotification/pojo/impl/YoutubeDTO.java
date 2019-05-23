@@ -92,6 +92,7 @@ public class YoutubeDTO implements LiveDTO, Serializable {
 
     public void setPlayabilityStatus(PlayabilityStatus playabilityStatus) {
         this.playabilityStatus = playabilityStatus;
+        liveStatus = playabilityStatus.getStatus();
     }
 
     public void setChannelMetadataRenderer(ChannelMetadataRenderer channelMetadataRenderer) {
@@ -104,37 +105,47 @@ public class YoutubeDTO implements LiveDTO, Serializable {
 
 
     public class PlayabilityStatus implements Serializable {
+        LiveStreamability liveStreamability;
         String status;
         String reason;
+        public void setLiveStreamability(LiveStreamability liveStreamability) {
+            this.liveStreamability = liveStreamability;
+        }
 
         public void setReason(String reason) {
             this.reason = reason;
-            liveStatus = LiveStatus.CLOSED;
         }
 
         public void setStatus(String status) {
             this.status = status;
-            switch (status) {
-                case "LIVE_STREAM_OFFLINE":
-                    liveStatus = LiveStatus.CLOSED;
-                    break;
-                case "OK":
-                    if(reason==null)
-                        liveStatus = LiveStatus.OPENED;
-                    else
-                        liveStatus = LiveStatus.CLOSED;
-                    break;
-                default:
-                    liveStatus = LiveStatus.UNKNOWN;
-                    break;
-            }
         }
-
+        public LiveStatus getStatus(){
+            //直播关闭
+            if(status.equals("LIVE_STREAM_OFFLINE")){
+                return LiveStatus.CLOSED;
+            }
+            //直播中
+            else if(status.equals("OK") && liveStreamability!=null){
+                if(reason==null)
+                    //正常直播
+                    return LiveStatus.OPENED;
+                else
+                    //刚下播2分钟内 {"status":"OK","reason":"该直播活动已结束。",liveStreamability":{"liveStreamabilityRenderer":some data}}
+                    return LiveStatus.CLOSED;
+            }else if(status.equals("OK") && liveStreamability==null){
+                //不在直播
+                return LiveStatus.CLOSED;
+            }
+            //其他情况
+            return LiveStatus.UNKNOWN;
+        }
 
         @Override
         public String toString() {
             return "PlayabilityStatus{" +
-                    "status='" + status + '\'' +
+                    "liveStreamability=" + liveStreamability +
+                    ", status='" + status + '\'' +
+                    ", reason='" + reason + '\'' +
                     '}';
         }
     }
@@ -210,7 +221,7 @@ class VideoDetails implements Serializable {
                 ", channelId='" + channelId + '\'' +
                 ", viewCount='" + viewCount + '\'' +
                 ", author='" + author + '\'' +
-                ", shortDescription='" + shortDescription.substring(0, 20) + '\'' +
+                ", shortDescription='" + (shortDescription.length()>20?shortDescription.substring(0,20):shortDescription) + '\'' +
                 ", thumbnail='" + thumbnail + '\'' +
                 '}';
     }
@@ -258,10 +269,50 @@ class ChannelMetadataRenderer implements Serializable {
     public String toString() {
         return "ChannelMetadataRenderer{" +
                 "channelUrl='" + channelUrl + '\'' +
-                ", description='" + description.substring(20) + '\'' +
+                ", description='" + (description.length()>20?description.substring(0,20):description)+ '\'' +
                 ", title='" + title + '\'' +
                 ", vanityChannelUrl='" + vanityChannelUrl + '\'' +
                 '}';
     }
 }
 
+class LiveStreamability implements Serializable{
+    LiveStreamabilityRenderer liveStreamabilityRenderer;
+    public class LiveStreamabilityRenderer{
+        String broadcastId;
+        String pollDelayMs;
+        String videoId;
+
+        public void setBroadcastId(String broadcastId) {
+            this.broadcastId = broadcastId;
+        }
+
+        public void setPollDelayMs(String pollDelayMs) {
+            this.pollDelayMs = pollDelayMs;
+        }
+
+        public void setVideoId(String videoId) {
+            this.videoId = videoId;
+        }
+
+        @Override
+        public String toString() {
+            return "LiveStreamabilityRenderer{" +
+                    "broadcastId='" + broadcastId + '\'' +
+                    ", pollDelayMs='" + pollDelayMs + '\'' +
+                    ", videoId='" + videoId + '\'' +
+                    '}';
+        }
+    }
+
+    public void setLiveStreamabilityRenderer(LiveStreamabilityRenderer liveStreamabilityRenderer) {
+        this.liveStreamabilityRenderer = liveStreamabilityRenderer;
+    }
+
+    @Override
+    public String toString() {
+        return "LiveStreamability{" +
+                "liveStreamabilityRenderer=" + liveStreamabilityRenderer +
+                '}';
+    }
+}
