@@ -4,8 +4,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ParseUtil {
-    public static String urlPatternString = "https://(?:www|live)?\\.?(bilibili|twitch|youtube)\\.(?:tv|com)/(?:channel/)?(\\w+)(?:/live)?";
-    public static String inputPattenString = "(bilibili|twitch|youtube|observer)[@\\s*](\\w+)";
+    public static String urlPatternString = "https://(?:www|live)?\\.?(bilibili|twitch|youtube)\\.(?:tv|com)/(?:channel/)?([\\w-]+)(?:/live)?";
+    public static String inputPattenString = "(bilibili|twitch|youtube|observer)[@\\s*]([\\w-]+)";
     public static String proxyPatternString = "(http|socks)[5s]?://(.+):(\\d+)";
     public static Pattern inputPattern = Pattern.compile(inputPattenString,Pattern.CASE_INSENSITIVE);
     public static Pattern urlPattern = Pattern.compile(urlPatternString,Pattern.CASE_INSENSITIVE);
