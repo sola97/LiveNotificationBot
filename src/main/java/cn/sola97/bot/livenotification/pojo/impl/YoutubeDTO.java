@@ -97,6 +97,7 @@ public class YoutubeDTO implements LiveDTO, Serializable {
 
     public void setChannelMetadataRenderer(ChannelMetadataRenderer channelMetadataRenderer) {
         this.channelMetadataRenderer = channelMetadataRenderer;
+        liveStatus = LiveStatus.CLOSED;
     }
 
     public void setVideoDetails(VideoDetails videoDetails) {
@@ -126,7 +127,7 @@ public class YoutubeDTO implements LiveDTO, Serializable {
             }
             //直播中
             else if(status.equals("OK") && liveStreamability!=null){
-                if(reason==null)
+                if(reason==null && liveStatus==LiveStatus.UNKNOWN)
                     //正常直播
                     return LiveStatus.OPENED;
                 else
