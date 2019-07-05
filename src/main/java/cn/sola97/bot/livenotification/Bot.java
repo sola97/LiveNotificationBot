@@ -59,7 +59,7 @@ public class Bot {
                     Optional.ofNullable(jda.getTextChannelById(dto.channelId)).map(channel -> {
                         Message msg = dto.messageBuilder.build();
                         channel.sendMessage(msg)
-                                .queue(suc -> logger.info("发送成功：" + msg.getEmbeds().get(0).getDescription()), fail -> logger.info("发送失败：" + msg.getEmbeds().get(0).getDescription()));
+                                .queue(suc -> logger.info("发送成功：" + msg.getEmbeds().get(0).getDescription()), fail ->logger.warn("发送失败：" + msg.getEmbeds().get(0).getDescription(),fail));
                         return CommandResults.SUCCESSED;
                     }).orElseGet(() -> {
                         return CommandResults.CHANNEL_NOT_EXISTS;

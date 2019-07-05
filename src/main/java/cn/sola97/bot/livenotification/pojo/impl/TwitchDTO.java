@@ -174,7 +174,7 @@ class Channel implements Serializable {
     }
 
     public String getTitle() {
-        return title == null ? "null" : title;
+        return (title == null || title.matches("\\s+")) ? "null" : title;
     }
 
     public void setTitle(String title) {
