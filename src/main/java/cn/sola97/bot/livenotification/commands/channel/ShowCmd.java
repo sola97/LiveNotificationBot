@@ -410,12 +410,12 @@ class Paginator extends Menu {
                             embedBuilders.set(pageNum - 1, mb);
                             break;
                         case OBSERVER_NOT_FOUND:
-                            event.getChannel().sendMessage("添加提醒**" + args[0] + "@" + args[1] + "**没有找到直播间").queue();
+                            event.getChannel().sendMessage("删除提醒**" + args[0] + "@" + args[1] + "**没有找到直播间").queue();
                             break;
                         case ALREADY_REMOVED_MENTIONS:
                             break;
                         default:
-                            event.getChannel().sendMessage("添加提醒**" + args[0] + "@" + args[1] + "**结果未知").queue();
+                            event.getChannel().sendMessage("删除提醒**" + args[0] + "@" + args[1] + "**结果未知").queue();
                     }
                 break;
             case CHANGE_MENTION_LEVEL:
@@ -429,7 +429,7 @@ class Paginator extends Menu {
                             event.getChannel().sendMessage("要设置@提醒等级的**" + args[0] + "@" + args[1] + "**直播间不存在").queue();
                             break;
                         default:
-                            event.getChannel().sendMessage("设置提醒等级结果未知").queue();
+                            event.getChannel().sendMessage("设置@提醒等级结果未知").queue();
                             break;
                     }
                 break;

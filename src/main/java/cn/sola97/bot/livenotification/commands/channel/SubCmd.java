@@ -5,6 +5,7 @@ import cn.sola97.bot.livenotification.Bot;
 import cn.sola97.bot.livenotification.BotConfig;
 import cn.sola97.bot.livenotification.commands.ChannelCommand;
 import net.dv8tion.jda.core.entities.IMentionable;
+import net.dv8tion.jda.core.entities.Message;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +23,10 @@ public class SubCmd extends ChannelCommand {
     @Override
     protected void execute(CommandEvent event) {
         String[] args = liveArgsExtract(event);
-        List<String> mentions = event.getMessage().getMentionedUsers().stream().map(IMentionable::getAsMention).collect(Collectors.toList());
+        List<String> mentions = event.getMessage().getMentions(Message.MentionType.USER,Message.MentionType.ROLE, Message.MentionType.HERE)
+                .stream().map(IMentionable::getAsMention).collect(Collectors.toList());
+        if (event.getArgs().contains("@here")) mentions.add("@here");
+        if (event.getArgs().contains("@everyone")) mentions.add("@everyone");
         if (args.length == 2)
             event.reply("正在检测直播间是否有效...", m -> {
                 switch (bot.getObManager().subscribe(event.getChannel().getId(), args[0], args[1])) {
@@ -30,7 +34,10 @@ public class SubCmd extends ChannelCommand {
                         if (!mentions.isEmpty()) {
                             switch (bot.getObManager().addMentions(event.getChannel().getId(), args[0], args[1], mentions)) {
                                 case SUCCESSED:
-                                    m.editMessage("特别关注**" + args[0] + "@" + args[1] + "**成功").queue();
+                                    m.editMessage("设置提醒**" + args[0] + "@" + args[1] + "**成功").queue();
+                                    break;
+                                default:
+                                    m.editMessage("设置提醒**" + args[0] + "@" + args[1] + "**失败").queue();
                                     break;
                             }
                         } else m.editMessage("订阅**" + args[0] + "@" + args[1] + "**成功").queue();
