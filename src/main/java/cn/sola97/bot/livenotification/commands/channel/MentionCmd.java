@@ -14,8 +14,8 @@ public class MentionCmd extends ChannelCommand {
     public MentionCmd(Bot bot) {
         super(bot);
         this.name = "mention";
-        this.help = "add or remove mentions for a subscribed streamer.";
-        this.arguments = "<add | remove> [@self...] <platform@userId | url>";
+        this.help = "manage mentions for a subscribed streamer.";
+        this.arguments = "<add | remove | clear> [@self...] <platform@userId | url>";
         this.aliases = new String[]{"mentions"};
     }
 
@@ -34,16 +34,16 @@ public class MentionCmd extends ChannelCommand {
             case "add":
                 switch (bot.getObManager().addMentions(event.getChannel().getId(), args[0], args[1], mentions)) {
                     case SUCCESSED:
-                        event.replySuccess("添加@提醒成功");
+                        event.replySuccess("添加提醒成功");
                         break;
                     case OBSERVER_NOT_FOUND:
-                        event.replyError("没有找到**" + args[0] + "@" + args[1] + "**,如果要添加，请用" + BotConfig.getPrefix() + "sub 命令");
+                        event.replyError("没有找到**" + args[0] + "@" + args[1] + "**，请先添加");
                         break;
                     case EMPTY_MENTIONS:
-                        event.reply("没有指定要@的用户");
+                        event.reply("没有指定要提醒的用户");
                         break;
                     case ALREADY_EXISTS_MENTIONS:
-                        event.reply("要@提醒的用户已存在");
+                        event.reply("要提醒的用户已存在");
                         break;
                     default:
                         event.replyError("添加失败，内部错误");
@@ -53,16 +53,16 @@ public class MentionCmd extends ChannelCommand {
             case "remove":
                 switch (bot.getObManager().removeMentions(event.getChannel().getId(), args[0], args[1], mentions)) {
                     case SUCCESSED:
-                        event.replySuccess("移除@提醒成功");
+                        event.replySuccess("移除提醒成功");
                         break;
                     case OBSERVER_NOT_FOUND:
-                        event.replyError("要移除@提醒的**" + args[0] + "@" + args[1] + "**直播间不存在");
+                        event.replyError("要移除提醒的**" + args[0] + "@" + args[1] + "**直播间不存在");
                         break;
                     case EMPTY_MENTIONS:
-                        event.reply("没有指定移除@的用户");
+                        event.reply("没有指定移除的用户");
                         break;
                     case ALREADY_REMOVED_MENTIONS:
-                        event.reply("不在" + args[0] + "@" + args[1] + "的@提醒列表中");
+                        event.reply("不在" + args[0] + "@" + args[1] + "的提醒列表中");
                         break;
                     default:
                         event.replyError("移除失败，内部错误");
@@ -72,17 +72,17 @@ public class MentionCmd extends ChannelCommand {
             case "clear":
                 switch (bot.getObManager().clearMentions(event.getChannel().getId(), args[0], args[1])) {
                     case SUCCESSED:
-                        event.replySuccess("清空成功");
+                        event.replySuccess("清空提醒成功");
                         break;
                     case OBSERVER_NOT_FOUND:
-                        event.replyError("要清空@提醒的**" + args[0] + "@" + args[1] + "**直播间不存在");
+                        event.replyError("要清空提醒的**" + args[0] + "@" + args[1] + "**直播间不存在");
                         break;
                     default:
-                        event.replyError("清空失败，内部错误");
+                        event.replyError("清空提醒失败，内部错误");
                 }
                 break;
             default:
-                event.replyError("操作" + action[0] + "不支持");
+                event.replyError("操作" + action[0] + "不支持，请检查命令");
         }
     }
 }
