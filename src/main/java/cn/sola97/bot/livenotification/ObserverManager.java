@@ -290,8 +290,8 @@ public class ObserverManager implements Serializable {
             }
         } catch (Exception e) {
             try {
-                Files.deleteIfExists(Paths.get(fileName));
-                logger.warn("发生错误,删除 " + fileName);
+                Files.move(Paths.get(fileName),Paths.get(fileName+".old"));
+                logger.warn("发生错误,重命名文件为 " + fileName+".old");
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
