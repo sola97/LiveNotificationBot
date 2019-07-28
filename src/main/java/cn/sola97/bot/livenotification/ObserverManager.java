@@ -1,6 +1,6 @@
 package cn.sola97.bot.livenotification;
 
-
+import static cn.sola97.bot.livenotification.BotConfig.getInterval;
 import cn.sola97.bot.livenotification.api.BaseAPI;
 import cn.sola97.bot.livenotification.enums.CommandResults;
 import cn.sola97.bot.livenotification.observable.BaseObservable;
@@ -211,7 +211,7 @@ public class ObserverManager implements Serializable {
     }
 
     public void addToShedulePool(BaseObservable ob, String type, String key) {
-        scheduledPool.computeIfAbsent(type, k -> new ConcurrentHashMap<>()).put(key, executor.scheduleAtFixedRate(ob, 0, 10, TimeUnit.SECONDS));
+        scheduledPool.computeIfAbsent(type, k -> new ConcurrentHashMap<>()).put(key, executor.scheduleAtFixedRate(ob, 0, getInterval(), TimeUnit.SECONDS));
     }
 
     public void deleteChannel(String channelId) {

@@ -15,7 +15,7 @@ public class BotConfig {
     private static Path path;
     private static final Logger logger = LoggerFactory.getLogger(BotConfig.class);
     private static final String token, proxy, prefix, ownerId,game;
-
+    private static final int interval;
     public static final String BIG_LEFT = "⏪";
     public static final String LEFT = "◀";
     public static final String STOP = "\u23f9";
@@ -42,6 +42,7 @@ public class BotConfig {
         proxy =  config.getString("proxy");
         prefix = config.getString("prefix");
         ownerId = config.getString("owner");
+        interval = config.getInt("check-interval");
         game = config.getString("game");
         if(token==null||token.isEmpty()){
             logger.error("Please provide a bot token.");
@@ -49,6 +50,10 @@ public class BotConfig {
         }
         if(ownerId==null||ownerId.isEmpty()){
             logger.error("Please provide a ownerId.");
+            System.exit(1);
+        }
+        if(interval<1){
+            logger.error("Interval must be a positive integer");
             System.exit(1);
         }
     }
@@ -86,4 +91,8 @@ public class BotConfig {
     public static String getGame() {
         return game==null||game.isEmpty()?"BiliBili Youtube Twitch":game;
     }
+
+    public static int getInterval(){
+        return interval;
+    };
 }
