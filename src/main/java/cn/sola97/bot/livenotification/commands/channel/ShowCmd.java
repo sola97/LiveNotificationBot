@@ -28,7 +28,7 @@ public class ShowCmd extends ChannelCommand {
     public ShowCmd(Bot bot) {
         super(bot);
         this.name = "show";
-        this.help = "subscribe a streamer on TextChannel ";
+        this.help = "show specific page by page number ";
         this.arguments = "[pagenum]";
         this.aliases = new String[]{"list", "ls"};
         builder = new Paginator.Builder()
@@ -377,6 +377,7 @@ class Paginator extends Menu {
                             embedBuilders.set(newPageNum - 1, new EmbedBuilder().setDescription("deleted").addBlankField(false).addBlankField(false));
                             break;
                         case ALREADY_DELETED:
+                            event.getChannel().sendMessage("删除失败**" + args[0] + "@" + args[1] + "**不存在").queue();
                             break;
                         case FAILED:
                             event.getChannel().sendMessage("删除**" + args[0] + "@" + args[1] + "**失败").queue();

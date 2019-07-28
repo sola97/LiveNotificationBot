@@ -14,14 +14,14 @@ public class ParseUtil {
     public static String[] parseInput(String inputString){
         Matcher m = inputPattern.matcher(inputString);
         if(m.find())
-            return new String[] {m.group(1),m.group(2)};
+            return new String[] {m.group(1).toLowerCase(),m.group(2).toLowerCase()};
         return new String[0];
     }
 
     public static String[] parseUrl(String urlString){
         Matcher m = urlPattern.matcher(urlString);
         if(m.find())
-            return new String[] {m.group(1),m.group(2)};
+            return new String[] {m.group(1).toLowerCase(),m.group(2).toLowerCase()};
         return new String[0];
     }
     public static String[] parseProxy(String proxyString){

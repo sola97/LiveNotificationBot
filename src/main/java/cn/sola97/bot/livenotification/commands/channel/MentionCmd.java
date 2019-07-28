@@ -14,7 +14,7 @@ public class MentionCmd extends ChannelCommand {
     public MentionCmd(Bot bot) {
         super(bot);
         this.name = "mention";
-        this.help = "(add|remove) mentions for a subscribed streamer.";
+        this.help = "add or remove mentions for a subscribed streamer.";
         this.arguments = "<add | remove> [@self...] <platform@userId | url>";
         this.aliases = new String[]{"mentions"};
     }
