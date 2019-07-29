@@ -13,6 +13,7 @@
 token = BOT_TOKEN_HERE
 owner = Your User ID
 prefix = "!"
+check-interval = 10
 game = "BiliBili Youtube Twitch"
 proxy = ""
 //如果需要代理
